@@ -1,14 +1,12 @@
 const rp = require('request-promise');
 const fs = require('fs');
 const sha1 = require('sha1');
-const token = '704a46331143d01b030fbc7b02a0b873fca723ab';
+const { codenationGetUri, codenationPostUri } = require('./tokens');
+
 const ascii = { a: 97, z: 122 };
 
 const getAnswer = async () => {
-  return await rp({
-    uri: `https://api.codenation.dev/v1/challenge/dev-ps/generate-data?token=${token}`,
-    json: true
-  });
+  return await rp({ uri: codenationGetUri, json: true });
 };
 
 const writeAnswer = answer => {
@@ -41,13 +39,11 @@ const decryptAnswer = ({ cifrado: encrypt, numero_casas: shift }) => {
   return decryptString;
 };
 
-const createSha1 = ({ decifrado: decryptedAnswer }) => {
-  return sha1(decryptedAnswer);
-};
+const createSha1 = ({ decifrado: decryptedAnswer }) => sha1(decryptedAnswer);
 
-const sendAnswer = async form => {
+const sendAnswer = async () => {
   return await rp({
-    uri: `https://api.codenation.dev/v1/challenge/dev-ps/submit-solution?token=${token}`,
+    uri: codenationPostUri,
     method: 'POST',
     formData: {
       answer: {
@@ -76,7 +72,7 @@ const getReadAndSendAnswer = async () => {
   answer.decifrado = decryptAnswer(answer);
   answer.resumo_criptografico = createSha1(answer);
   writeAnswer(answer);
-  await sendAnswer(answer);
+  await sendAnswer();
 };
 
 getReadAndSendAnswer();
