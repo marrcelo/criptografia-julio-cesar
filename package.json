@@ -1,0 +1,26 @@
+{
+  "name": "criptografia-julio-cesar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "caesarCipher.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marrcelo/criptografia-julio-cesar.git"
+  },
+  "keywords": [],
+  "author": "Marcelo Magalhães",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marrcelo/criptografia-julio-cesar/issues"
+  },
+  "homepage": "https://github.com/marrcelo/criptografia-julio-cesar#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "sha1": "^1.1.1"
+  }
+}
