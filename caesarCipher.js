@@ -13,13 +13,9 @@ const getAnswer = async () => {
   }
 };
 
-const writeAnswer = answer => {
-  fs.writeFileSync('answer.json', JSON.stringify(answer));
-};
+const writeAnswer = answer => fs.writeFileSync('answer.json', JSON.stringify(answer));
 
-const readAnswer = () => {
-  return JSON.parse(fs.readFileSync('answer.json'));
-};
+const readAnswer = () => JSON.parse(fs.readFileSync('answer.json'));
 
 const decryptCharacter = (character, shift) => {
   if (character.charCodeAt() >= ascii.a && character.charCodeAt() <= ascii.z) {
