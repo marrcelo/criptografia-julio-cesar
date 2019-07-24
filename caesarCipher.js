@@ -6,7 +6,11 @@ const { codenationGetUri, codenationPostUri } = require('./tokens');
 const ascii = { a: 97, z: 122 };
 
 const getAnswer = async () => {
-  return await rp({ uri: codenationGetUri, json: true });
+  try {
+    return await rp({ uri: codenationGetUri, json: true });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const writeAnswer = answer => {
@@ -42,28 +46,23 @@ const decryptAnswer = ({ cifrado: encrypt, numero_casas: shift }) => {
 const createSha1 = ({ decifrado: decryptedAnswer }) => sha1(decryptedAnswer);
 
 const sendAnswer = async () => {
-  return await rp({
-    uri: codenationPostUri,
-    method: 'POST',
-    formData: {
-      answer: {
-        value: fs.createReadStream('answer.json'),
-        options: {
-          filename: 'answer.json',
-          contentType: 'multipart/form-data'
+  try {
+    return await rp({
+      uri: codenationPostUri,
+      method: 'POST',
+      formData: {
+        answer: {
+          value: fs.createReadStream('answer.json'),
+          options: {
+            filename: 'answer.json',
+            contentType: 'multipart/form-data'
+          }
         }
       }
-    },
-    headers: {
-      'content-type': 'multipart/form-data'
-    }
-  })
-    .then(body => {
-      console.log(body);
-    })
-    .catch(err => {
-      console.log(err);
     });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const getReadAndSendAnswer = async () => {
@@ -72,7 +71,8 @@ const getReadAndSendAnswer = async () => {
   answer.decifrado = decryptAnswer(answer);
   answer.resumo_criptografico = createSha1(answer);
   writeAnswer(answer);
-  await sendAnswer();
+  const result = await sendAnswer();
+  console.log(result);
 };
 
 getReadAndSendAnswer();
